@@ -1,0 +1,7 @@
+海上风电运维平台准备进行SCADA事件月度换挡。input_data中的事件数据、分区计划、查询清单、现有表结构和变更说明是本次工作的依据。
+
+先核对事件时间、业务键和月度记录量，再在PostgreSQL17中建立按event_time划分的月分区表。主键和来源唯一约束需要包含分区键，站点时间查询与长时间序列读取应有合适的索引。
+
+把5月事件从DEFAULT移入独立关系，确认边界后挂载为月分区。6月事件继续留在DEFAULT。随后脱离1月分区并移入archive，活动数据与归档数据的总量不能变化。
+
+交付sql/partition_rollover.sql、exports/partition_inventory.csv、exports/query_results.csv、exports/archive_manifest.csv和reports/change_summary.csv。清单和报告应来自本次数据库结果，能够说明最终分区状态、三项查询结果和各阶段记录量。
